@@ -1,0 +1,128 @@
+
+<html>
+<head><meta charset='utf-8'/></head>
+<body style='margin:0; font-family: -apple-system, Segoe UI, Roboto, Helvetica, Arial;'>
+<script src='https://cdn.plot.ly/plotly-3.0.1.min.js'></script>
+<div style='position:fixed; top:10px; left:10px; z-index:10; background:#fff; border:1px solid #eee; border-radius:8px; padding:10px 12px; box-shadow:0 2px 8px rgba(0,0,0,.05);'>
+  <div style='font-weight:600; margin-bottom:6px'>表示コントロール</div>
+  <div>窓サイズ: <input type='range' id='win' min='0' max='120' value='60'/> <span id='winv'>60</span>°</div>
+  <div>回転: <input type='range' id='rot' min='0' max='360' value='45'/> <span id='rotv'>45</span>°</div>
+  <div style='margin-top:6px;'>
+    <label><input type='checkbox' id='chk0' checked/> 情緒</label>
+    <label style='margin-left:8px'><input type='checkbox' id='chk1' checked/> 機能</label>
+    <label style='margin-left:8px'><input type='checkbox' id='chk2' checked/> クラスタ</label>
+    <label style='margin-left:8px'><input type='checkbox' id='chk3' checked/> KW</label>
+  </div>
+</div>
+<div id='plot' style='width:100vw; height:100vh;'></div>
+<script>
+const TREE = {"安心感がある": {"pol": "ニュートラル", "size": 638, "funcs": {"手軽に入手できる": {"pol": "ニュートラル", "size": 638, "clusters": {"1": {"label": "供給・流通の不満", "pol": "ニュートラル", "size": 638, "kws": ["コカコーラ", "cocacola", "自販機", "好き", "ペプシ", "cola", "coke", "coca", "シート", "テテ", "cm", "ゼロ"]}}, "counts": {"pos": 0, "neg": 0, "neu": 638}}}, "counts": {"pos": 0, "neg": 0, "neu": 638}}, "不安になる": {"pol": "ネガティブ", "size": 552, "funcs": {"入手しづらい": {"pol": "ネガティブ", "size": 552, "clusters": {"8": {"label": "飲料選択の悩み", "pol": "ネガティブ", "size": 552, "kws": ["てる", "見る", "思う", "買う", "言う", "れる", "cm", "いい", "やる", "ない", "みる", "やつ"]}}, "counts": {"pos": 0, "neg": 552, "neu": 0}}}, "counts": {"pos": 0, "neg": 552, "neu": 0}}, "交流が深まる": {"pol": "ニュートラル", "size": 516, "funcs": {"手軽に入手できる": {"pol": "ニュートラル", "size": 516, "clusters": {"3": {"label": "飲料選好の比較", "pol": "ニュートラル", "size": 516, "kws": ["コカ・コーラ", "cm", "ペプシ", "hokkaidoccbc", "andteam", "コチ", "qt", "コラボ", "アンバサ", "ローソン", "昭和", "誕生"]}}, "counts": {"pos": 0, "neg": 0, "neu": 516}}}, "counts": {"pos": 0, "neg": 0, "neu": 516}}, "気分が上がる": {"pol": "ニュートラル", "size": 2442, "funcs": {"ゴクゴクチャージ": {"pol": "ニュートラル", "size": 490, "clusters": {"0": {"label": "コラボイベントの楽しみ", "pol": "ニュートラル", "size": 426, "kws": ["入力", "メッセージ", "応援", "こちら", "くださる", "ゴクゴクチャージ", "コーラコラボ", "genshin", "詳細", "一緒", "コカ", "オロルン"]}, "19": {"label": "原神コラボの楽しみ", "pol": "ニュートラル", "size": 64, "kws": ["モン", "パイ", "ゴクゴクチャージ", "一緒", "コーラコラボ", "genshin", "詳細", "コカ", "頑張る", "お迎え", "可愛い", "巾着"]}}, "counts": {"pos": 0, "neg": 0, "neu": 490}}, "飲み方の工夫": {"pol": "ポジティブ", "size": 382, "clusters": {"11": {"label": "飲み方の工夫", "pol": "ポジティブ", "size": 382, "kws": ["飲む", "ゼロ", "コーラ", "美味しい", "今日", "でる", "hokkaidoccbc", "炭酸", "買う", "シュガー", "久しぶり", "暑い"]}}, "counts": {"pos": 382, "neg": 0, "neu": 0}}, "本物のサトウキビ糖": {"pol": "ニュートラル", "size": 254, "clusters": {"12": {"label": "甘味料の変化", "pol": "ニュートラル", "size": 254, "kws": ["トランプ", "サトウキビ", "甘味", "合意", "本物", "会社", "日本", "アメリカ", "qt", "大統領", "使用", "人工"]}}, "counts": {"pos": 0, "neg": 0, "neu": 254}}, "飲料の比較分析": {"pol": "ニュートラル", "size": 248, "clusters": {"15": {"label": "飲料ブランドの比較", "pol": "ニュートラル", "size": 248, "kws": ["れる", "作品", "くる", "世界", "もの", "arilès", "ニューヨーク", "パリ", "アーティスト", "ロナウジーニョ", "動き", "象徴"]}}, "counts": {"pos": 0, "neg": 0, "neu": 248}}, "手軽に入手できる": {"pol": "ポジティブ", "size": 332, "clusters": {"6": {"label": "文化の楽しみ", "pol": "ポジティブ", "size": 238, "kws": ["コーク", "横丁", "渋谷", "期間", "大阪", "天神", "cocacola", "お初", "japan", "開催", "イベント", "コーラ"]}, "18": {"label": "購入商品の選定", "pol": "ニュートラル", "size": 94, "kws": ["みつ", "ころ", "24", "ww", "ゼロ", "すげる", "www", "off", "買う", "ケース", "乾杯", "ラベル"]}}, "counts": {"pos": 238, "neg": 0, "neu": 94}}, "音楽LIVEの楽しさ": {"pol": "ニュートラル", "size": 200, "clusters": {"10": {"label": "音楽イベントの参加", "pol": "ニュートラル", "size": 200, "kws": ["サマフェス", "summer", "fes", "live", "音楽", "2025", "アリーナ", "六本木", "コーラ", "出演", "ヒルズ", "qt"]}}, "counts": {"pos": 0, "neg": 0, "neu": 200}}, "コラボデザイン巾着": {"pol": "ニュートラル", "size": 118, "clusters": {"9": {"label": "コラボの楽しみ", "pol": "ニュートラル", "size": 118, "kws": ["ゴクゴクチャージ", "コーラコラボ", "genshin", "一緒", "詳細", "シトラリ", "コカ", "オロルン", "チャスカ", "ばあちゃん", "巾着", "欲しい"]}}, "counts": {"pos": 0, "neg": 0, "neu": 118}}, "語源の明確化": {"pol": "ニュートラル", "size": 112, "clusters": {"2": {"label": "語源の探求", "pol": "ニュートラル", "size": 112, "kws": ["語源", "ソーセージ", "グラタン", "がい", "スケール", "フラミンゴ", "スタジオ", "スローガン", "ポーランド", "冷たい", "バーベキュー", "モチーフ"]}}, "counts": {"pos": 0, "neg": 0, "neu": 112}}, "言葉の由来": {"pol": "ニュートラル", "size": 99, "clusters": {"4": {"label": "言葉の由来", "pol": "ニュートラル", "size": 99, "kws": ["由来", "名前", "言葉", "アパレル", "日産", "タメ", "放送", "寝る", "抜く", "50", "ネオン", "触れる"]}}, "counts": {"pos": 0, "neg": 0, "neu": 99}}, "アメリカン雑貨": {"pol": "ポジティブ", "size": 90, "clusters": {"14": {"label": "アメリカン雑貨の楽しみ", "pol": "ポジティブ", "size": 90, "kws": ["雑貨", "アメリカン", "リメイク", "男前", "ワークショップ", "インテリア", "アメリカンヴィンテージ", "ねこ", "家具", "オーダー", "メイド", "アメリカンヴィンテージスタイル"]}}, "counts": {"pos": 90, "neg": 0, "neu": 0}}, "容量サイズが適切": {"pol": "ニュートラル", "size": 89, "clusters": {"5": {"label": "「グランドサイズの体験」", "pol": "ニュートラル", "size": 89, "kws": ["グランド", "サイズ", "グランドコーク", "フライ", "マックフライポテト", "マクドナルド", "スプライト", "容量", "livedoornews", "21", "対象", "登場"]}}, "counts": {"pos": 0, "neg": 0, "neu": 89}}, "キャンペーンの効果": {"pol": "ニュートラル", "size": 28, "clusters": {"17": {"label": "飲料ブランドの動向", "pol": "ニュートラル", "size": 28, "kws": ["キャンペーン", "イオン", "サントリー", "コーラ", "ジョージア", "いろは", "アクエリアス", "キリン", "明治", "クロ", "ボス", "モール"]}}, "counts": {"pos": 0, "neg": 0, "neu": 28}}}, "counts": {"pos": 710, "neg": 0, "neu": 1732}}, "期待外れでがっかり": {"pol": "ネガティブ", "size": 396, "funcs": {"入手しづらい": {"pol": "ネガティブ", "size": 396, "clusters": {"13": {"label": "自販機の価格", "pol": "ネガティブ", "size": 396, "kws": ["値上げ", "自販機", "製品", "200", "コーラ", "20", "500", "10", "ml", "飲料", "ペットボトル", "コーヒー"]}}, "counts": {"pos": 0, "neg": 396, "neu": 0}}}, "counts": {"pos": 0, "neg": 396, "neu": 0}}, "特別感を得られる": {"pol": "ポジティブ", "size": 259, "funcs": {"北海道限定の天然水": {"pol": "ポジティブ", "size": 195, "clusters": {"16": {"label": "北海道グルメの楽しみ", "pol": "ポジティブ", "size": 195, "kws": ["北海道", "限定", "グルメ", "メロン", "土産", "hokkaido", "地域", "デザイン", "美味しい", "巡り", "pr", "散策"]}}, "counts": {"pos": 195, "neg": 0, "neu": 0}}, "意味を洗う": {"pol": "ニュートラル", "size": 64, "clusters": {"7": {"label": "「意味の探求」", "pol": "ニュートラル", "size": 64, "kws": ["意味", "洗う", "言葉", "本来", "うまい", "宇宙", "こだわる", "握る", "希望", "規模", "のる", "輝く"]}}, "counts": {"pos": 0, "neg": 0, "neu": 64}}}, "counts": {"pos": 195, "neg": 0, "neu": 64}}};
+const COLOR = {'ポジティブ':'#2ca02c','ネガティブ':'#d62728','ニュートラル':'#9467bd'};
+const radii = [1.20, 0.95, 0.72, 0.50];
+const op = [0.18, 0.30, 0.55, 0.80];
+const KW_LIMIT = 200;
+ 
+function bandMesh(phi0, phi1, th0, th1, r0, r1, nt, np, color, opacity, hovertext){
+  const x=[],y=[],z=[],I=[],J=[],K=[];
+  const ths=[]; for(let i=0;i<=nt;i++){ ths.push(th0 + (th1-th0)*i/nt); }
+  const phs=[]; for(let j=0;j<=np;j++){ phs.push(phi0 + (phi1-phi0)*j/np); }
+  function sph(r, th, ph){ return [r*Math.cos(th)*Math.sin(ph), r*Math.sin(th)*Math.sin(ph), r*Math.cos(ph)]; }
+  for(const r of [r0,r1]){ for(const ph of phs){ for(const th of ths){ const [X,Y,Z]=sph(r,th,ph); x.push(X); y.push(Y); z.push(Z);} } }
+  const m = ths.length; const base_in=0, base_out=m*phs.length; function tri(a,b,c){ I.push(a); J.push(b); K.push(c); }
+  for(const base of [base_in, base_out]){ for(let r=0;r<phs.length-1;r++){ const row=base+r*m, nxt=row+m; for(let c=0;c<m-1;c++){ tri(row+c,nxt+c,nxt+c+1); tri(row+c,nxt+c+1,row+c+1);} } }
+  for(const colIdx of [0, m-1]){ for(let r=0;r<phs.length-1;r++){ const a0=base_in+r*m+colIdx,a1=a0+m,b0=base_out+r*m+colIdx,b1=b0+m; tri(a0,b0,b1); tri(a0,b1,a1);} }
+  return {type:'mesh3d', x, y, z, i:I, j:J, k:K, color, opacity, hovertext, hoverinfo:'text', lighting:{ambient:0.6,diffuse:0.5,specular:0.2,roughness:0.7,fresnel:0.1}, lightposition:{x:120,y:160,z:100}};
+}
+ 
+ function fallbackTraces(){
+   const traces=[]; const nt=48,np=24; const eps=0.02; const phi0=eps*Math.PI, phi1=(1.0-eps)*Math.PI; const th0=0, th1=2*Math.PI;
+   for(let i=0;i<4;i++){
+     const color = COLOR['ニュートラル'];
+     const ht = ['情緒','機能','クラスタ','KW'][i];
+     traces.push(bandMesh(phi0,phi1, th0,th1, radii[i]-0.06, radii[i], nt, np, color, op[i], ht));
+   }
+   return traces;
+ }
+ 
+ // aggregate functions across emotions (sum sizes, majority polarity by pos/neg counts)
+ function aggregateFunctions(){
+   const map = new Map(); // key -> {size,pos,neg,neu}
+   for(const [ek,E] of Object.entries(TREE)){
+     for(const [fk,F] of Object.entries(E.funcs||{})){
+       const key=fk; if(!map.has(key)) map.set(key,{size:0,pos:0,neg:0,neu:0});
+       const m=map.get(key); m.size += (F.size||0); const c=F.counts||{}; m.pos += (c.pos||0); m.neg += (c.neg||0); m.neu += (c.neu||0);
+     }
+   }
+   const arr=[]; for(const [fk,m] of map.entries()){ const pol = (m.pos>=m.neg)? (m.pos===m.neg? 'ニュートラル':'ポジティブ') : 'ネガティブ'; arr.push({label:fk,size:m.size,pol}); }
+   arr.sort((a,b)=> (b.size||0)-(a.size||0)); return arr;
+ }
+ // collect all clusters
+ function collectClusters(){
+   const arr=[]; for(const [ek,E] of Object.entries(TREE)){ for(const [fk,F] of Object.entries(E.funcs||{})){ for(const [cid,C] of Object.entries(F.clusters||{})){ arr.push({label:C.label,size:C.size||0,pol:C.pol||'ニュートラル'}); } } }
+   arr.sort((a,b)=> (b.size||0)-(a.size||0)); return arr;
+ }
+ // collect keywords across clusters up to KW_LIMIT (size proportional to cluster size / kw count)
+ function collectKeywords(){
+   const items=[]; for(const [ek,E] of Object.entries(TREE)){ for(const [fk,F] of Object.entries(E.funcs||{})){ for(const [cid,C] of Object.entries(F.clusters||{})){
+     const kws=C.kws||[]; const per=Math.max(1, Math.floor((C.size||1)/Math.max(1,kws.length)));
+     for(const kw of kws){ items.push({label:kw,size:per,pol:C.pol||'ニュートラル'}); }
+   }}}
+   items.sort((a,b)=> (b.size||0)-(a.size||0));
+   return items.slice(0, Math.max(1, KW_LIMIT));
+ }
+ 
+ function bestPath(){
+   const emos = Object.entries(TREE);
+   if(!emos.length) return null;
+   emos.sort((a,b)=> (b[1].size||0)-(a[1].size||0));
+   const [ek,E] = emos[0];
+   const funcs = Object.entries(E.funcs||{}).sort((a,b)=> (b[1].size||0)-(a[1].size||0));
+   const [fk,F] = funcs[0] || [null,null];
+   let cid=null, C=null; if(F){ const cls = Object.entries(F.clusters||{}).sort((a,b)=> (b[1].size||0)-(a[1].size||0)); [cid,C] = cls[0] || [null,null]; }
+   const kw = (C && C.kws && C.kws[0]) || '';
+   return {ek, E, fk, F, cid, C, kw};
+ }
+ 
+ function render(){
+   const win = parseFloat(document.getElementById('win').value) * Math.PI/180;
+   const rot = parseFloat(document.getElementById('rot').value) * Math.PI/180;
+   document.getElementById('winv').textContent = Math.round(win*180/Math.PI);
+   document.getElementById('rotv').textContent = Math.round(rot*180/Math.PI);
+   const nt=56, np=28, eps=0.02; const phi0=eps*Math.PI, phi1=(1.0-eps)*Math.PI;
+   const thCut = win; const th0 = rot + thCut/2, th1 = rot + 2*Math.PI - thCut/2;
+   const on=[0,1,2,3].map(i=> document.getElementById('chk'+i).checked);
+   const traces=[];
+   // Emotions segmented by size (all)
+   if (on[0]){
+     const emosAll = Object.entries(TREE).sort((a,b)=> (b[1].size||0)-(a[1].size||0));
+     const totalE = emosAll.reduce((s, [,v]) => s + (v.size||0), 0) || 1;
+     let theta = 0;
+     for (const [ek, Ev] of emosAll) {
+       const frac = (Ev.size||0) / totalE; const dth = 2*Math.PI * frac; const seg0=theta, seg1=theta+dth; theta += dth;
+       const st=Math.max(seg0, th0), en=Math.min(seg1, th1);
+       if(en>st){ const color = COLOR[Ev.pol||'ニュートラル']||'#9467bd'; const ht=`情緒: ${ek} / 極性: ${Ev.pol||'ニュートラル'} / 件数: ${Ev.size||0}`; traces.push(bandMesh(phi0,phi1, st,en, radii[0]-0.06, radii[0], nt,np, color, op[0], ht)); }
+     }
+   }
+   // Functions segmented across window
+   if (on[1]){
+     const items = aggregateFunctions(); const total = items.reduce((s,v)=> s+(v.size||0),0)||1; let theta=th0; const span=th1-th0; for(const it of items){ const frac=(it.size||0)/total; const dth=span*frac; const st=theta, en=theta+dth; theta=en; if(en>st){ const color=COLOR[it.pol||'ニュートラル']||'#9467bd'; const ht=`機能: ${it.label} / 極性: ${it.pol||'ニュートラル'} / 件数: ${it.size||0}`; traces.push(bandMesh(phi0,phi1, st,en, radii[1]-0.06, radii[1], nt,np, color, op[1], ht)); } }
+   }
+   // Clusters segmented across window
+   if (on[2]){
+     const items = collectClusters(); const total = items.reduce((s,v)=> s+(v.size||0),0)||1; let theta=th0; const span=th1-th0; for(const it of items){ const frac=(it.size||0)/total; const dth=span*frac; const st=theta, en=theta+dth; theta=en; if(en>st){ const color=COLOR[it.pol||'ニュートラル']||'#9467bd'; const ht=`クラスタ: ${it.label} / 極性: ${it.pol||'ニュートラル'} / 件数: ${it.size||0}`; traces.push(bandMesh(phi0,phi1, st,en, radii[2]-0.06, radii[2], nt,np, color, op[2], ht)); } }
+   }
+   // Keywords segmented across window (limited)
+   if (on[3]){
+     const items = collectKeywords(); const total = items.reduce((s,v)=> s+(v.size||0),0)||1; let theta=th0; const span=th1-th0; for(const it of items){ const frac=(it.size||0)/total; const dth=span*frac; const st=theta, en=theta+dth; theta=en; if(en>st){ const color=COLOR[it.pol||'ニュートラル']||'#9467bd'; const ht=`KW: ${it.label}`; traces.push(bandMesh(phi0,phi1, st,en, radii[3]-0.06, radii[3], nt,np, color, op[3], ht)); } }
+   }
+   if (traces.length === 0){ traces.push(...fallbackTraces()); }
+   const layout={scene:{aspectmode:'data',xaxis:{visible:false},yaxis:{visible:false},zaxis:{visible:false},camera:{eye:{x:1.2,y:1.1,z:1.1}}},paper_bgcolor:'#ffffff',showlegend:false,title:'Solid 3D'};
+   Plotly.newPlot('plot', traces, layout, {displaylogo:false, displayModeBar:false});
+ }
+ 
+ ['win','rot','chk0','chk1','chk2','chk3'].forEach(id=> document.getElementById(id).addEventListener('input', render));
+ render();
+ </script>
+ </body>
+ </html>
+ 
